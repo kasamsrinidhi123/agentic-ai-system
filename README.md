@@ -1,96 +1,178 @@
-# agentic-ai-system
-Scalable multi-agent AI orchestration system with async workflows, streaming responses, retry handling, and manual batching.
 # Agentic AI System for Multi-Step Tasks
 
-## Overview
+A scalable multi-agent AI orchestration system built using FastAPI, asyncio, WebSockets, and asynchronous workflow execution.
 
-This project implements a scalable Agentic AI System capable of handling complex multi-step tasks using multiple specialized AI agents coordinated through asynchronous workflows.
-
-The system accepts complex user requests, decomposes them into smaller executable subtasks, assigns tasks to specialized agents, and streams progressive responses back to the user in real time.
-
-The architecture is designed with scalability, modularity, asynchronous execution, and fault tolerance in mind.
+This project demonstrates task decomposition, multi-agent coordination, streaming responses, retry handling, queue-based communication, and manual batching for scalable AI workflows.
 
 ---
 
-# Features
+# Project Overview
 
-* Multi-agent architecture
-* Planner Agent for task decomposition
-* Retriever Agent for information collection
-* Analyzer Agent for data processing
-* Writer Agent for final response generation
-* Asynchronous orchestration using `asyncio`
-* WebSocket-based streaming responses
-* Event-driven task queue
-* Retry handling mechanism
-* Manual batching implementation
-* Scalable and modular system design
+The system accepts complex user requests, decomposes them into smaller executable subtasks, assigns those tasks to specialized AI agents, coordinates asynchronous execution, and streams progressive updates back to the user in real time.
+
+The architecture is designed with:
+- Scalability
+- Fault tolerance
+- Async orchestration
+- Streaming communication
+- Modular agent boundaries
+
+---
+
+# Key Features
+
+- Multi-agent orchestration
+- Planner Agent for task decomposition
+- Retriever Agent for information gathering
+- Analyzer Agent for processing and insights
+- Writer Agent for final response generation
+- Async workflow execution using asyncio
+- WebSocket-based streaming responses
+- Queue-based communication
+- Retry handling mechanisms
+- Manual batching implementation
+- Fault-tolerant architecture
+
+---
+
+# Tech Stack
+
+- Python
+- FastAPI
+- AsyncIO
+- WebSockets
+- OpenAI API (optional)
+- asyncio.Queue
+- Uvicorn
 
 ---
 
 # Architecture
 
-```text id="jlwmz8"
+```text
 User Request
-      ↓
+      │
+      ▼
 FastAPI API Layer
-      ↓
+      │
+      ▼
 Workflow Orchestrator
-      ↓
+      │
+      ▼
 Planner Agent
-      ↓
-┌──────────────┬──────────────┐
-↓              ↓              ↓
-Retriever   Analyzer      Writer
-Agent        Agent         Agent
-      ↓
-Streaming/WebSocket Response
+      │
+ ┌────┴─────────────┐
+ ▼                  ▼
+Retriever Agent   Analyzer Agent
+        │            │
+        └────┬───────┘
+             ▼
+        Writer Agent
+             │
+             ▼
+Streaming Response (WebSocket)
 ```
 
 ---
 
-# Agent Responsibilities
+# Core Components
+
+## API Layer
+
+Handles:
+- Incoming requests
+- Workflow triggering
+- API responses
+- WebSocket connections
+
+Endpoints:
+- `POST /execute`
+- `WebSocket /ws`
+
+---
+
+## Workflow Orchestrator
+
+Coordinates:
+- Async execution
+- Agent communication
+- Workflow sequencing
+- Output aggregation
+
+Uses:
+
+```python
+asyncio.gather()
+```
+
+for concurrent execution.
+
+---
 
 ## Planner Agent
 
-* Breaks complex tasks into smaller subtasks
-* Assigns subtasks to specialized agents
+Responsibilities:
+- Understand user intent
+- Break tasks into subtasks
+- Assign subtasks to agents
+
+---
 
 ## Retriever Agent
 
-* Collects contextual information
-* Simulates external retrieval workflows
+Responsibilities:
+- Gather contextual information
+- Simulate retrieval workflows
+- Prepare input data
+
+---
 
 ## Analyzer Agent
 
-* Processes and analyzes retrieved information
-* Generates insights
+Responsibilities:
+- Analyze retrieved data
+- Generate insights
+- Produce intermediate outputs
+
+---
 
 ## Writer Agent
 
-* Produces the final structured response/report
+Responsibilities:
+- Aggregate outputs
+- Generate structured reports
+- Produce final responses
 
 ---
 
 # Async Orchestration
 
-The system uses asynchronous execution with:
+The system uses asynchronous execution for scalability and concurrency.
 
-```python id="jlwm72"
-asyncio.gather()
+Example:
+
+```python
+await asyncio.gather(
+    retriever_task,
+    analyzer_task
+)
 ```
 
-to enable concurrent execution of multiple agents efficiently.
+Benefits:
+- Concurrent task execution
+- Reduced latency
+- Efficient resource usage
+- Improved scalability
 
 ---
 
-# Streaming Responses
+# Streaming Response Handling
 
-WebSocket-based streaming is implemented to provide real-time updates while the workflow is executing.
+WebSocket-based streaming provides real-time updates during execution.
 
 Example streamed messages:
 
-```text id="8jlwmq"
+```text
 Planning tasks...
 Retriever Agent completed
 Analyzer Agent completed
@@ -98,64 +180,120 @@ Writer Agent completed
 Final report generated
 ```
 
+Benefits:
+- Real-time feedback
+- Better user experience
+- Progressive execution visibility
+
 ---
 
-# Retry Mechanism
+# Queue-Based Communication
 
-Fault tolerance is implemented using retry handling logic that retries failed agent executions automatically.
+The architecture uses asynchronous queues for event-driven communication.
+
+Current implementation:
+- Python asyncio.Queue()
+
+Future support:
+- Redis
+- Kafka
+- RabbitMQ
+
+---
+
+# Retry Handling
+
+Fault tolerance is implemented using retry mechanisms.
+
+Features:
+- Automatic retries
+- Configurable retry count
+- Delay between retries
+
+Benefits:
+- Improved resilience
+- Better reliability
+- Reduced transient failures
 
 ---
 
 # Manual Batching
 
-Custom batching logic is implemented independently to process grouped tasks efficiently and improve scalability.
+Custom batching logic is implemented independently using a BatchProcessor.
+
+Purpose:
+- Group tasks together
+- Improve throughput
+- Reduce processing overhead
+
+This satisfies the manual batching requirement of the assignment.
 
 ---
 
-# Technologies Used
+# Engineering Highlights
 
-* Python
-* FastAPI
-* asyncio
-* WebSockets
-* Async Queues
-* OpenAI API (optional)
-* Redis-ready architecture
+- Built asynchronous multi-agent orchestration system using Python asyncio
+- Implemented concurrent workflow execution using asyncio.gather()
+- Designed event-driven communication architecture
+- Added real-time streaming updates using WebSockets
+- Implemented retry handling for fault tolerance
+- Developed custom manual batching logic
+- Built modular agent-based architecture
+- Designed scalable workflow orchestration pipeline
 
 ---
 
 # Project Structure
 
-```text id="jlwm19"
+```text
 agentic-ai-system/
 │
 ├── agents/
+│   ├── planner_agent.py
+│   ├── retriever_agent.py
+│   ├── analyzer_agent.py
+│   └── writer_agent.py
+│
 ├── api/
+│   └── main.py
+│
 ├── orchestrator/
+│   └── workflow.py
+│
 ├── streaming/
-├── batching/
+│   └── websocket_manager.py
+│
 ├── retry/
+│   └── retry_handler.py
+│
+├── batching/
+│   └── batch_processor.py
+│
 ├── queue/
+│   └── redis_queue.py
+│
 ├── docs/
+│   └── system_design.md
 │
 ├── README.md
 ├── requirements.txt
+├── .gitignore
 └── .env.example
 ```
 
 ---
 
-# How to Run
+# Running the Project
 
 ## Install Dependencies
 
-```bash id="jlwm0o"
+```bash
 pip install -r requirements.txt
 ```
 
 ## Start Server
 
-```bash id="jlwmq1"
+```bash
 uvicorn api.main:app --reload
 ```
 
@@ -165,17 +303,17 @@ uvicorn api.main:app --reload
 
 Open Swagger UI:
 
-```text id="jlwmtt"
+```text
 http://127.0.0.1:8000/docs
 ```
 
 ---
 
-# WebSocket Streaming Test
+# WebSocket Streaming
 
 Connect using:
 
-```text id="jlwm53"
+```text
 ws://127.0.0.1:8000/ws
 ```
 
@@ -183,7 +321,7 @@ ws://127.0.0.1:8000/ws
 
 # Example API Request
 
-```json id="jlwm3m"
+```json
 {
   "task": "Generate AI investment report"
 }
@@ -191,9 +329,9 @@ ws://127.0.0.1:8000/ws
 
 ---
 
-# Example Response
+# Example API Response
 
-```json id="jlwmcw"
+```json
 {
   "report": "AI Investment Report..."
 }
@@ -201,42 +339,68 @@ ws://127.0.0.1:8000/ws
 
 ---
 
+# Demo Screenshots
+
+## Swagger API
+
+(Add screenshot here)
+
+## WebSocket Streaming
+
+(Add screenshot here)
+
+## Project Structure
+
+(Add screenshot here)
+
+---
+
 # Scalability Considerations
 
-* Decoupled agent-based architecture
-* Asynchronous concurrent execution
-* Event-driven communication
-* Retry handling for resilience
-* Queue-based workflow design
-* Manual batching for throughput optimization
+Implemented scalability features:
+- Async execution
+- Concurrent agent processing
+- Queue-based workflows
+- Streaming communication
+- Retry handling
+- Manual batching
+- Decoupled architecture
 
 ---
 
 # Scaling Issue Encountered
 
-Managing concurrent streaming connections while coordinating multiple asynchronous agents increased event-loop overhead during development.
+Managing multiple concurrent WebSocket streaming connections while coordinating asynchronous agent execution increased event-loop overhead during development.
 
 ---
 
 # Design Decision to Improve
 
-Future versions would replace local async queues with Kafka or RabbitMQ for distributed scalability and persistent messaging.
+Future versions would replace local asyncio queues with distributed messaging systems such as Kafka or RabbitMQ.
 
 ---
 
 # Development Trade-offs
 
-Redis/Docker integration was simplified into Python async queues to reduce environment setup complexity and accelerate prototype development.
+Redis/Docker integration was simplified into Python asyncio queues to reduce setup complexity and accelerate prototype development.
 
 ---
 
 # Future Improvements
 
-* Kafka integration
-* Distributed worker nodes
-* Persistent memory layer
-* Advanced observability
-* Production deployment support
+- Kafka integration
+- RabbitMQ integration
+- Distributed worker nodes
+- Persistent memory layer
+- Monitoring and observability
+- Authentication support
+- Kubernetes deployment
+
+---
+
+# Conclusion
+
+This project demonstrates a scalable Agentic AI orchestration system capable of handling complex multi-step tasks using asynchronous execution, specialized AI agents, streaming responses, retry handling, queue-based communication, and manual batching.
 
 ---
 
