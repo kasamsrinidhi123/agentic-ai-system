@@ -339,22 +339,6 @@ ws://127.0.0.1:8000/ws
 
 ---
 
-# Demo Screenshots
-
-## Swagger API
-
-(Add screenshot here)
-
-## WebSocket Streaming
-
-(Add screenshot here)
-
-## Project Structure
-
-(Add screenshot here)
-
----
-
 # Scalability Considerations
 
 Implemented scalability features:
