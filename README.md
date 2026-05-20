@@ -336,7 +336,23 @@ ws://127.0.0.1:8000/ws
   "report": "AI Investment Report..."
 }
 ```
+## Redis Queue Integration
 
+The system integrates Redis for asynchronous task queue simulation.
+
+Run Redis using Docker:
+
+```bash
+docker run -d -p 6379:6379 redis
+```
+
+Check running containers:
+
+```bash
+docker ps
+```
+
+Redis improves scalability and asynchronous communication between agents.
 ---
 
 # Scalability Considerations
