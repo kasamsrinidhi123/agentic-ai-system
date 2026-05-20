@@ -6,6 +6,8 @@ This project implements a scalable multi-agent AI orchestration system capable o
 
 The system accepts a user request, decomposes it into smaller subtasks, coordinates execution across multiple agents, and streams progressive updates back to the user in real time.
 
+Designed as a production-inspired multi-agent orchestration system showcasing async execution, streaming workflows, and scalable AI coordination.
+
 The architecture focuses on:
 - Asynchronous orchestration
 - Scalability
@@ -15,7 +17,32 @@ The architecture focuses on:
 
 ---
 
-# 2. High-Level Architecture
+# 2. Tech Stack
+
+- Python
+- FastAPI
+- AsyncIO
+- WebSockets
+- OpenAI API
+- asyncio.Queue
+- Uvicorn
+
+---
+
+# 3. Key Features
+
+- Multi-agent orchestration
+- Task decomposition
+- Async workflow execution
+- Real-time streaming responses
+- Retry handling
+- Queue-based communication
+- Manual batching
+- Fault-tolerant architecture
+
+---
+
+# 4. High-Level Architecture
 
 ```text
 User Request
@@ -41,9 +68,11 @@ Retriever Agent   Analyzer Agent
 Streaming Response (WebSocket)
 ```
 
+The architecture is designed using modular components where each agent performs a specialized responsibility.
+
 ---
 
-# 3. Core Components
+# 5. Core Components
 
 ## API Layer (FastAPI)
 
@@ -121,7 +150,7 @@ Responsibilities:
 
 ---
 
-# 4. Async Orchestration
+# 6. Async Orchestration
 
 The system uses Python asyncio for asynchronous orchestration.
 
@@ -142,7 +171,7 @@ Benefits:
 
 ---
 
-# 5. Streaming Response Handling
+# 7. Streaming Response Handling
 
 Real-time updates are implemented using WebSockets.
 
@@ -163,7 +192,7 @@ Benefits:
 
 ---
 
-# 6. Queue-Based Communication
+# 8. Queue-Based Communication
 
 The architecture follows an event-driven communication model using asynchronous queues.
 
@@ -183,7 +212,7 @@ Future upgrade:
 
 ---
 
-# 7. Retry Handling
+# 9. Retry Handling
 
 Fault tolerance is implemented using retry mechanisms.
 
@@ -199,7 +228,7 @@ Benefits:
 
 ---
 
-# 8. Manual Batching
+# 10. Manual Batching
 
 Custom batching logic is implemented independently using a BatchProcessor.
 
@@ -212,7 +241,7 @@ This satisfies the manual batching requirement of the assignment.
 
 ---
 
-# 9. Scalability Considerations
+# 11. Scalability Considerations
 
 The system is designed with scalability in mind.
 
@@ -227,7 +256,7 @@ Implemented scalability features:
 
 ---
 
-# 10. Scaling Issue Encountered
+# 12. Scaling Issue Encountered
 
 Managing multiple concurrent WebSocket streaming connections while coordinating asynchronous agent execution increased event-loop overhead during development.
 
@@ -235,7 +264,7 @@ As the number of active streaming clients increased, synchronization and resourc
 
 ---
 
-# 11. Design Decision to Improve
+# 13. Design Decision to Improve
 
 Future versions would replace local asyncio queues with distributed messaging systems such as Kafka or RabbitMQ.
 
@@ -247,15 +276,55 @@ Advantages:
 
 ---
 
-# 12. Development Trade-offs
+# 14. Development Trade-offs
 
 Redis and Docker integration were simplified into Python asyncio queues to reduce setup complexity and accelerate prototype development.
 
-This trade-off enabled faster development while still demonstrating event-driven asynchronous workflows.
+This trade-off enabled faster development while still demonstrating asynchronous event-driven workflows.
 
 ---
 
-# 13. Future Improvements
+# 15. API Example
+
+## Request
+
+```json
+{
+  "task": "Generate AI investment report"
+}
+```
+
+## Response
+
+```json
+{
+  "report": "AI Investment Report..."
+}
+```
+
+---
+
+# 16. Engineering Highlights
+
+This project demonstrates core software engineering and distributed systems concepts through a modular multi-agent AI architecture.
+
+Key engineering strengths include:
+- Asynchronous workflow orchestration
+- Real-time streaming communication
+- Event-driven architecture
+- Modular agent boundaries
+- Fault-tolerant execution
+- Queue-based coordination
+- Concurrent task processing
+- Scalable system design
+- Manual batching implementation
+- Clean separation of responsibilities
+
+The system was intentionally designed without relying on black-box agent frameworks in order to demonstrate low-level orchestration, async coordination, and system design understanding.
+
+---
+
+# 17. Future Improvements
 
 - Kafka integration
 - RabbitMQ integration
@@ -267,6 +336,6 @@ This trade-off enabled faster development while still demonstrating event-driven
 
 ---
 
-# 14. Conclusion
+# 18. Conclusion
 
 This project successfully demonstrates a scalable Agentic AI orchestration system capable of handling complex multi-step tasks using asynchronous execution, specialized AI agents, streaming responses, retry handling, queue-based communication, and manual batching.
